@@ -7,8 +7,9 @@ public class Bala extends Element{
     private String dir;
     public Bala(int x, int y,String d){super(x, y);dir = d;}
     public void draw(TextGraphics graphics){
-        graphics.setBackgroundColor(TextColor.Factory.fromString("#75E579"));
-        graphics.fillRectangle(new TerminalPosition(position.getX(), position.getY()), new TerminalSize(1, 1), ' ');
+        graphics.setBackgroundColor(TextColor.Factory.fromString("#A91818"));
+        graphics.setForegroundColor(TextColor.Factory.fromString("#000000"));
+        graphics.fillRectangle(new TerminalPosition(position.getX(), position.getY()), new TerminalSize(1, 1), '.');
     }
     public void move(){
         switch (dir){

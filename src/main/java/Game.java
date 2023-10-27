@@ -12,7 +12,7 @@ public class Game {
     public Screen screen;
     public Terminal terminal;
     private Mapa mapa = new Mapa(110,40);
-    private static final int FPS = 10;
+    private static final int FPS = 60;
     private static final long FRAME_DURATION = 1000 / FPS;
     public Game() throws IOException {
         TerminalSize terminalSize = new TerminalSize(110, 40);
@@ -41,7 +41,7 @@ public class Game {
                     if (keyType == KeyType.Escape) {
                         break;
                     }
-                    mapa.readInput(keyStroke);
+                    //mapa.readInput(keyStroke);
                 }
                 lastFrameTime = currentTime;
             }
