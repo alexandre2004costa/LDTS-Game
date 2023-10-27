@@ -11,11 +11,11 @@ import java.io.IOException;
 public class Game {
     public Screen screen;
     public Terminal terminal;
-    private Mapa mapa = new Mapa(110,40);
+    private Mapa mapa = new Mapa(130,65);
     private static final int FPS = 60;
     private static final long FRAME_DURATION = 1000 / FPS;
     public Game() throws IOException {
-        TerminalSize terminalSize = new TerminalSize(110, 40);
+        TerminalSize terminalSize = new TerminalSize(130, 65);
         DefaultTerminalFactory terminalFactory = new DefaultTerminalFactory().setInitialTerminalSize(terminalSize);
         terminal = terminalFactory.createTerminal();
         screen = new TerminalScreen(terminal);

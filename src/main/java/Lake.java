@@ -10,10 +10,10 @@ public class Lake extends Object{
 
     public void draw(TextGraphics graphics){
         graphics.setBackgroundColor(TextColor.Factory.fromString("#25E4DD"));
-        graphics.fillRectangle(new TerminalPosition(0, position.getY()), new TerminalSize(110, height), ' '); // the 110 is the screen total rows
+        graphics.fillRectangle(new TerminalPosition(0, position.getY()), new TerminalSize(130, height), ' '); // the 110 is the screen total rows
         graphics.setBackgroundColor(TextColor.Factory.fromString("#663300"));
-        graphics.fillRectangle(new TerminalPosition(0, position.getY()-1), new TerminalSize(110, 1), ' '); // the 110 is the screen total rows
-        graphics.fillRectangle(new TerminalPosition(0, position.getY()+height), new TerminalSize(110, 1), ' '); // the 110 is the screen total rows
+        graphics.fillRectangle(new TerminalPosition(0, position.getY()-1), new TerminalSize(130, 1), ' '); // the 110 is the screen total rows
+        graphics.fillRectangle(new TerminalPosition(0, position.getY()+height), new TerminalSize(130, 1), ' '); // the 110 is the screen total rows
     }
 
 }
