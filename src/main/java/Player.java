@@ -1,28 +1,29 @@
 import com.googlecode.lanterna.SGR;
 import com.googlecode.lanterna.TerminalPosition;
+import com.googlecode.lanterna.TerminalSize;
 import com.googlecode.lanterna.TextColor;
 import com.googlecode.lanterna.graphics.TextGraphics;
-import com.googlecode.lanterna.terminal.Terminal;
 
 import java.io.IOException;
 
-public class Nave extends Element{
+public class Player extends Element{
     public String facingDirection;
-    public Nave(int x, int y){super(x,y);facingDirection = "up";}
+    public Player(int x, int y){super(x,y);facingDirection = "up";}
     public void draw(TextGraphics graphics) throws IOException {
-        graphics.setForegroundColor(TextColor.Factory.fromString("#568AC6"));
-        graphics.setBackgroundColor(TextColor.Factory.fromString("#C541E6"));
+        graphics.setForegroundColor(TextColor.Factory.fromString("#000000"));
+        graphics.setBackgroundColor(TextColor.Factory.fromString("#000000"));
         graphics.enableModifiers(SGR.BOLD);
         int x = position.getX();
         int y = position.getY();
         int lado = 2;
         switch (facingDirection){
             case "up":
-                graphics.fillTriangle(
-                        new TerminalPosition(x, y - lado),
-                        new TerminalPosition(x - (int) (lado * Math.sqrt(3) / 2), y + lado / 2),
-                        new TerminalPosition(x + (int) (lado * Math.sqrt(3) / 2), y + lado / 2),
-                        ' ');
+                graphics.fillRectangle(new TerminalPosition(position.getX(), position.getY()),new TerminalSize(1,1),' ');
+                graphics.setBackgroundColor(TextColor.Factory.fromString("#A91818"));
+                graphics.setCharacter(new TerminalPosition(position.getX(), position.getY()+1),'+');
+                graphics.setCharacter(new TerminalPosition(position.getX()-1, position.getY()+1),'-');
+                graphics.setCharacter(new TerminalPosition(position.getX()+1, position.getY()+1),'-');
+                graphics.putString(new TerminalPosition(position.getX(), position.getY()+2),"|");
                 break;
             case "down":
                 graphics.fillTriangle(

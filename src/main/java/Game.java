@@ -11,11 +11,11 @@ import java.io.IOException;
 public class Game {
     public Screen screen;
     public Terminal terminal;
-    private Mapa mapa = new Mapa(130,65);
+    private Mapa mapa = new Mapa(190,50);
     private static final int FPS = 60;
     private static final long FRAME_DURATION = 1000 / FPS;
     public Game() throws IOException {
-        TerminalSize terminalSize = new TerminalSize(130, 65);
+        TerminalSize terminalSize = new TerminalSize(190, 50);
         DefaultTerminalFactory terminalFactory = new DefaultTerminalFactory().setInitialTerminalSize(terminalSize);
         terminal = terminalFactory.createTerminal();
         screen = new TerminalScreen(terminal);
@@ -41,7 +41,7 @@ public class Game {
                     if (keyType == KeyType.Escape) {
                         break;
                     }
-                    //mapa.readInput(keyStroke);
+                    mapa.readInput(keyStroke);
                 }
                 lastFrameTime = currentTime;
             }

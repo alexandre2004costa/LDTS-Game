@@ -1,11 +1,12 @@
-import com.googlecode.lanterna.TerminalPosition;
-import com.googlecode.lanterna.TerminalSize;
-import com.googlecode.lanterna.TextColor;
+import com.googlecode.lanterna.*;
 import com.googlecode.lanterna.graphics.TextGraphics;
 import com.googlecode.lanterna.input.KeyStroke;
 import com.googlecode.lanterna.input.KeyType;
 import com.googlecode.lanterna.terminal.Terminal;
 import com.googlecode.lanterna.SGR;
+import com.googlecode.lanterna.TextCharacter;
+import com.googlecode.lanterna.TextColor;
+
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -14,21 +15,17 @@ import java.util.List;
 public class Mapa {
     private int width;
     private int height;
-    //private Nave nave = new Nave(20,20);
-
-    private Lake lake = new Lake(0,2,8);
-    private Road road = new Road(0,20,8);
+    private Player player = new Player(20,20);
+    private String backgroundColor = "#28006E";
     private List<Bala> balas = new ArrayList<>();
     public Mapa(int w , int h){
         width = w;
         height = h;
     }
     public void draw(TextGraphics graphics) throws IOException {
-        graphics.setBackgroundColor(TextColor.Factory.fromString("#A91818"));
+        graphics.setBackgroundColor(TextColor.Factory.fromString(backgroundColor));
         graphics.fillRectangle(new TerminalPosition(0, 0), new TerminalSize(width, height), ' ');
-        lake.draw(graphics);
-        road.draw(graphics);
-        //nave.draw(graphics);
+        player.draw(graphics);
         List<Bala> balasParaRemover = new ArrayList<>();
         for (Bala k : balas){
             if(k.getX() > width || k.getX() < 0 ||k.getY() > height || k.getY() < 0)balasParaRemover.add(k);
@@ -36,22 +33,23 @@ public class Mapa {
             k.move();
         }
         balas.removeAll(balasParaRemover);
+
     }
 
-    /*public void readInput(KeyStroke keyStroke) {
+    public void readInput(KeyStroke keyStroke) {
         KeyType keyType = keyStroke.getKeyType();
 
         if (keyType == KeyType.ArrowRight){
-            nave.move("right");
+            player.move("right");
         } else if (keyType == KeyType.ArrowLeft) {
-            nave.move("left");
+            player.move("left");
         } else if (keyType == KeyType.ArrowUp) {
-        nave.move("up");
+            player.move("up");
         } else if (keyType == KeyType.ArrowDown) {
-        nave.move("down");
+            player.move("down");
         } else if (keyType == KeyType.Enter){
-            balas.add(new Bala(nave.getX(), nave.getY(),nave.facingDirection));
+            balas.add(new Bala(player.getX(), player.getY(),player.facingDirection));
             System.out.println(balas.size());
         }
-    }*/
+    }
 }
