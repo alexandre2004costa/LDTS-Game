@@ -7,6 +7,8 @@ import com.googlecode.lanterna.SGR;
 import com.googlecode.lanterna.TextCharacter;
 import com.googlecode.lanterna.TextColor;
 
+import java.io.*;
+
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -17,23 +19,29 @@ public class Mapa {
     private int height;
     private Player player = new Player(20,20);
     private String backgroundColor = "#28006E";
-    private List<Bala> balas = new ArrayList<>();
+
+    private int mouthFrequency = 10;
+
     public Mapa(int w , int h){
         width = w;
         height = h;
     }
     public void draw(TextGraphics graphics) throws IOException {
         graphics.setBackgroundColor(TextColor.Factory.fromString(backgroundColor));
-        graphics.fillRectangle(new TerminalPosition(0, 0), new TerminalSize(width, height), ' ');
-        player.draw(graphics);
-        List<Bala> balasParaRemover = new ArrayList<>();
-        for (Bala k : balas){
-            if(k.getX() > width || k.getX() < 0 ||k.getY() > height || k.getY() < 0)balasParaRemover.add(k);
-            k.draw(graphics);
-            k.move();
+        graphics.setForegroundColor(TextColor.Factory.fromString("#131DAB"));
+        //graphics.fillRectangle(new TerminalPosition(0, 0), new TerminalSize(width, height), ' ');
+        char[][] map = loadMapFromFile("map.txt");
+        for (int row = 0; row < 50; row++) {
+            for (int col = 0; col < 200; col++) {
+                graphics.fillRectangle(new TerminalPosition(col,row),new TerminalSize(1,1),map[row][col]);
+            }
         }
-        balas.removeAll(balasParaRemover);
-
+        player.draw(graphics);
+        if(mouthFrequency == 0){
+            player.mouthOpen = !player.mouthOpen;
+            mouthFrequency = 10;
+        }
+        mouthFrequency--;
     }
 
     public void readInput(KeyStroke keyStroke) {
@@ -46,10 +54,32 @@ public class Mapa {
         } else if (keyType == KeyType.ArrowUp) {
             player.move("up");
         } else if (keyType == KeyType.ArrowDown) {
-            player.move("down");
-        } else if (keyType == KeyType.Enter){
-            balas.add(new Bala(player.getX(), player.getY(),player.facingDirection));
-            System.out.println(balas.size());
-        }
+            player.move("down");}
     }
+    public static char[][] loadMapFromFile(String filename) throws IOException {
+            BufferedReader reader = new BufferedReader(new FileReader(filename));
+            String line;
+            int numRows = 50;
+            int numCols = 200;
+            char[][] map = new char[numRows][numCols];
+            int row = 0;
+            boolean readingFile = true;
+            while (readingFile) {
+                line = reader.readLine();
+                char[] chars = line.toCharArray();
+                for (int col = 0; col < chars.length; col++) {
+                    if (chars[col] == '!') {
+                        readingFile = false;
+                        break;
+                    } else if (chars[col] == '|') {
+                        break;
+                    } else {
+                        map[row][col] = chars[col];
+                    }
+                }
+                row++;
+            }
+            reader.close();
+            return map;
+         }
 }
