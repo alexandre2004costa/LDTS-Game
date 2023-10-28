@@ -7,15 +7,18 @@ import com.googlecode.lanterna.terminal.DefaultTerminalFactory;
 import com.googlecode.lanterna.terminal.Terminal;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Game {
     public Screen screen;
     public Terminal terminal;
-    private Mapa mapa = new Mapa(200,50);
+    private Mapa mapa = new Mapa(190,50);
+
     private static final int FPS = 60;
     private static final long FRAME_DURATION = 1000 / FPS;
     public Game() throws IOException {
-        TerminalSize terminalSize = new TerminalSize(200, 50);
+        TerminalSize terminalSize = new TerminalSize(190, 50);
         DefaultTerminalFactory terminalFactory = new DefaultTerminalFactory().setInitialTerminalSize(terminalSize);
         terminal = terminalFactory.createTerminal();
         screen = new TerminalScreen(terminal);

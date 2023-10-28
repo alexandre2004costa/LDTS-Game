@@ -19,7 +19,6 @@ public class Mapa {
     private int height;
     private Player player = new Player(20,20);
     private String backgroundColor = "#28006E";
-
     private int mouthFrequency = 10;
 
     public Mapa(int w , int h){
@@ -32,7 +31,7 @@ public class Mapa {
         //graphics.fillRectangle(new TerminalPosition(0, 0), new TerminalSize(width, height), ' ');
         char[][] map = loadMapFromFile("map.txt");
         for (int row = 0; row < 50; row++) {
-            for (int col = 0; col < 200; col++) {
+            for (int col = 0; col < 190; col++) {
                 graphics.fillRectangle(new TerminalPosition(col,row),new TerminalSize(1,1),map[row][col]);
             }
         }
