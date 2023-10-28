@@ -17,18 +17,19 @@ import java.util.List;
 public class Mapa {
     private int width;
     private int height;
-    private Player player = new Player(20,20);
+    private Player player = new Player(5,24);
     private String backgroundColor = "#000000";
     private int mouthFrequency = 10;
+    char[][] map;
 
-    public Mapa(int w , int h){
+    public Mapa(int w , int h) throws IOException {
         width = w;
         height = h;
+        map = loadMapFromFile("map.txt");
     }
     public void draw(TextGraphics graphics) throws IOException {
         graphics.setBackgroundColor(TextColor.Factory.fromString(backgroundColor));
         graphics.setForegroundColor(TextColor.Factory.fromString("#2A0069"));
-        char[][] map = loadMapFromFile("map.txt");
         for (int row = 0; row < 51; row++) {
             for (int col = 0; col < 190; col++) {
                 graphics.setBackgroundColor(TextColor.Factory.fromString(backgroundColor));
@@ -44,7 +45,6 @@ public class Mapa {
                     graphics.setBackgroundColor(TextColor.Factory.fromString("#1E63B2"));
                     graphics.fillRectangle(new TerminalPosition(col, row), new TerminalSize(1, 1), map[row][col]);
                 }
-
                 }}
         player.draw(graphics);
         if(mouthFrequency == 0){
@@ -58,13 +58,28 @@ public class Mapa {
         KeyType keyType = keyStroke.getKeyType();
 
         if (keyType == KeyType.ArrowRight){
-            player.move("right");
+            if(canMove("right"))player.move("right");
         } else if (keyType == KeyType.ArrowLeft) {
-            player.move("left");
+            if(canMove("left"))player.move("left");
         } else if (keyType == KeyType.ArrowUp) {
-            player.move("up");
+            if(canMove("up"))player.move("up");
         } else if (keyType == KeyType.ArrowDown) {
-            player.move("down");}
+            if(canMove("down"))player.move("down");}
+    }
+    private boolean canMove(String direction){
+        int x = player.getX();
+        int y = player.getY();
+        switch (direction){
+            case "up":
+                return map[y-1][x] != 'P'&&map[y-1][x+1] != 'P'&&map[y-1][x+2] != 'P'&&map[y-1][x+3] != 'P'&&map[y-1][x+4] != 'P';
+            case "down":
+                return map[y+3][x] != 'P'&&map[y+3][x+1] != 'P'&&map[y+3][x+2] != 'P'&&map[y+3][x+3] != 'P'&&map[y+3][x+4] != 'P';
+            case "left":
+                return map[y][x-1] != 'P'&&map[y+1][x-1] != 'P'&&map[y+2][x-1] != 'P';
+            case "right":
+                return map[y][x+5] != 'P'&&map[y+1][x+5] != 'P'&&map[y+2][x+5] != 'P';
+        }
+        return true;
     }
     public static char[][] loadMapFromFile(String filename) throws IOException {
             BufferedReader reader = new BufferedReader(new FileReader(filename));
