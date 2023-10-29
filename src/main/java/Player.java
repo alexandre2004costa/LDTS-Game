@@ -7,17 +7,7 @@ public class Player extends Element{
     public String facingDirection;
     public boolean mouthOpen = true;
     public Player(int x, int y){super(x,y);facingDirection = "up";}
-    private void drawTheStyle(char[][] pacManImage,TextGraphics graphics){
-        int x = position.getX();
-        int y = position.getY();
-        for (int row = 0; row < pacManImage.length; row++) {
-            for (int col = 0; col < pacManImage[row].length; col++) {
-                if (pacManImage[row][col] != '#') {
-                    graphics.fillRectangle(new TerminalPosition(x+col,y+row),new TerminalSize(1,1),pacManImage[row][col]);
-                }
-            }
-        }
-    }
+
     public void draw(TextGraphics graphics) throws IOException {
         graphics.setForegroundColor(TextColor.Factory.fromString("#633CA5"));
         graphics.setBackgroundColor(TextColor.Factory.fromString("#B5D221"));

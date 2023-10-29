@@ -31,5 +31,16 @@ public class Element {
     public Position getPosition() {
         return new Position(position.getX(), position.getY());
     }
+    public void drawTheStyle(char[][] pacManImage,TextGraphics graphics){
+        int x = position.getX();
+        int y = position.getY();
+        for (int row = 0; row < pacManImage.length; row++) {
+            for (int col = 0; col < pacManImage[row].length; col++) {
+                if (pacManImage[row][col] != '#') {
+                    graphics.fillRectangle(new TerminalPosition(x+col,y+row),new TerminalSize(1,1),pacManImage[row][col]);
+                }
+            }
+        }
+    }
 
 }

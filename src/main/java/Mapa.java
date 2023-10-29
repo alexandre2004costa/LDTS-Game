@@ -18,8 +18,9 @@ public class Mapa {
     private int width;
     private int height;
     private Player player = new Player(5,24);
+    private Enemies enemie = new Enemies(30,24);
     private String backgroundColor = "#000000";
-    private int mouthFrequency = 10;
+    private int mouthFrequency = 8;
     char[][] map;
 
     public Mapa(int w , int h) throws IOException {
@@ -42,14 +43,15 @@ public class Mapa {
                     graphics.setBackgroundColor(TextColor.Factory.fromString("#959043"));
                     graphics.fillRectangle(new TerminalPosition(col, row), new TerminalSize(1, 1), ' ');
                 } else {
-                    graphics.setBackgroundColor(TextColor.Factory.fromString("#1E63B2"));
-                    graphics.fillRectangle(new TerminalPosition(col, row), new TerminalSize(1, 1), map[row][col]);
+                    graphics.setBackgroundColor(TextColor.Factory.fromString("#CC0066"));
+                    graphics.fillRectangle(new TerminalPosition(col, row), new TerminalSize(1, 1), ' ');
                 }
                 }}
         player.draw(graphics);
+        enemie.draw(graphics);
         if(mouthFrequency == 0){
             player.mouthOpen = !player.mouthOpen;
-            mouthFrequency = 10;
+            mouthFrequency = 8;
         }
         mouthFrequency--;
     }
