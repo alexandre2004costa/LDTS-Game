@@ -17,10 +17,11 @@ import java.util.List;
 public class Mapa {
     private int width;
     private int height;
-    private Player player = new Player(5,24);
-    private Enemies enemie = new Enemies(30,24);
+    private Player player = new Player(35,31);
+    private Enemies enemie = new Enemies(10,25);
     private String backgroundColor = "#000000";
     private int mouthFrequency = 8;
+    private int enemiesMoveFrequency = 8;
     char[][] map;
 
     public Mapa(int w , int h) throws IOException {
@@ -31,8 +32,8 @@ public class Mapa {
     public void draw(TextGraphics graphics) throws IOException {
         graphics.setBackgroundColor(TextColor.Factory.fromString(backgroundColor));
         graphics.setForegroundColor(TextColor.Factory.fromString("#2A0069"));
-        for (int row = 0; row < 51; row++) {
-            for (int col = 0; col < 190; col++) {
+        for (int row = 0; row < 57; row++) {
+            for (int col = 0; col < 91; col++) {
                 graphics.setBackgroundColor(TextColor.Factory.fromString(backgroundColor));
                 if (map[row][col] == '.') {
                     graphics.fillRectangle(new TerminalPosition(col, row), new TerminalSize(1, 1), ' ');
@@ -47,6 +48,7 @@ public class Mapa {
                     graphics.fillRectangle(new TerminalPosition(col, row), new TerminalSize(1, 1), ' ');
                 }
                 }}
+        graphics.fillRectangle(new TerminalPosition(81, 1), new TerminalSize(1, 1), ' ');
         player.draw(graphics);
         enemie.draw(graphics);
         if(mouthFrequency == 0){
@@ -54,6 +56,11 @@ public class Mapa {
             mouthFrequency = 8;
         }
         mouthFrequency--;
+        if(enemiesMoveFrequency == 0){
+            enemie.move(player.position,map);
+            enemiesMoveFrequency = 8;
+        }
+        enemiesMoveFrequency--;
     }
 
     public void readInput(KeyStroke keyStroke) {
@@ -86,8 +93,8 @@ public class Mapa {
     public static char[][] loadMapFromFile(String filename) throws IOException {
             BufferedReader reader = new BufferedReader(new FileReader(filename));
             String line;
-            int numRows = 51;
-            int numCols = 190;
+            int numRows = 57;
+            int numCols = 91;
             char[][] map = new char[numRows][numCols];
             int row = 0;
             boolean readingFile = true;
