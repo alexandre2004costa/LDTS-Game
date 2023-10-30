@@ -30,6 +30,14 @@ public class Monster extends Element{
     public void move(Position p,char[][]map,TextGraphics graphics,String color){
         int x = this.position.getX();
         int y = this.position.getY();
+        if(x == 1 && y == 25 && movingDirection.equals("left")){
+            position = new Position(80,25);
+            return;
+        }
+        if(position.getX() == 77 && position.getY() == 25 && movingDirection.equals("right")){
+            position = new Position(1,25);
+            return;
+        }
         boolean t = true;
         boolean b = true;
         boolean e = true;
@@ -78,8 +86,6 @@ public class Monster extends Element{
                     }
             }}
         }else {
-            graphics.setBackgroundColor(TextColor.Factory.fromString(color));
-            graphics.fillRectangle(new TerminalPosition(p.getX(), p.getY()), new TerminalSize(1, 1), ' ');
             double topo = 2000000000;
             double baixo = 2000000000;
             double esq = 2000000000;

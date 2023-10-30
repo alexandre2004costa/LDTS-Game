@@ -12,6 +12,7 @@ import java.io.*;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 public class Mapa {
@@ -22,6 +23,9 @@ public class Mapa {
     private final String wallsColor = "#385A81";
     private final String coinsColor = "#959043";
     private final int mouthFrequency = 8;
+
+    private final int timeInScout = 10000;
+    private long startTime;
     private int tempM = 0;
     private final int enemiesMoveFrequency = 7;
     private int tempMF = 0;
@@ -30,11 +34,14 @@ public class Mapa {
     private BlueMonster blue = new BlueMonster(45,25);
     private PinkMonster pink = new PinkMonster(45,25);
     private OrangeMonster orange = new OrangeMonster(45,25);
+    private List<SpecialPoint> specialPoints = new ArrayList<>();
 
     public Mapa(int w , int h) throws IOException {
         width = w;
         height = h;
         map = loadMapFromFile("map.txt");
+        startTime = System.currentTimeMillis();
+
     }
     public void draw(TextGraphics graphics) throws IOException {
         graphics.setBackgroundColor(TextColor.Factory.fromString(backgroundColor));
@@ -73,6 +80,27 @@ public class Mapa {
         }
         tempM++;
         tempMF++;
+        long currentTime = System.currentTimeMillis();
+        long tempoDecorrido = currentTime - startTime;
+        if (tempoDecorrido >= timeInScout && !blue.mode.equals("fright")){
+            blue.mode = "hunt";
+            pink.mode = "hunt";
+            orange.mode = "hunt";
+            red.mode = "hunt";
+        }
+        Iterator<SpecialPoint> iterator = specialPoints.iterator();
+        while (iterator.hasNext()) {
+            SpecialPoint points = iterator.next();
+            System.out.println(points.getX());
+            System.out.println(player.getX());
+            if (points.getX() >= player.getX() && points.getX() <= player.getX()+5 && points.getY() >= player.getY() && points.getY() <= player.getY()+3) {
+                blue.mode = "fright";
+                pink.mode = "fright";
+                orange.mode = "fright";
+                red.mode = "fright";
+                iterator.remove();
+            }
+        }
     }
 
     public void readInput(KeyStroke keyStroke) {
@@ -85,12 +113,8 @@ public class Mapa {
             if(canMove("up"))player.move("up");
         } else if (keyType == KeyType.ArrowDown) {
             if(canMove("down"))player.move("down");
-        } else if (keyType == keyType.Tab) {
-            blue.mode = "fright";
-            pink.mode = "fright";
-            orange.mode = "fright";
-            red.mode = "fright";
         }
+
 
     }
     private boolean canMove(String direction){
@@ -126,6 +150,7 @@ public class Mapa {
                     } else if (chars[col] == '#') {
                         break;
                     } else {
+                        if (chars[col] == 'o')specialPoints.add(new SpecialPoint(row,col));
                         map[row][col] = chars[col];
                     }
                 }

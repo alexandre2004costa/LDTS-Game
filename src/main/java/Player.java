@@ -66,6 +66,16 @@ public class Player extends Element{
     }
     public void move(String direction){
         facingDirection = direction;
+        System.out.println(position.getX());
+        System.out.println(position.getY());
+        if(position.getX() == 1 && position.getY() == 25 && direction.equals("left")){
+            position = new Position(80,25);
+            return;
+        }
+        if(position.getX() == 77 && position.getY() == 25 && direction.equals("right")){
+            position = new Position(0,25);
+            return;
+        }
         switch (direction){
             case "up":
                 position = moveUp();
