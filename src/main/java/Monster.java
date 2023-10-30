@@ -1,37 +1,26 @@
 import com.googlecode.lanterna.TextColor;
 import com.googlecode.lanterna.graphics.TextGraphics;
 
-public class Enemies extends Element{
+public abstract class Monster extends Element{
     public String mode = "Scatter";
-    public Enemies(int x,int y){super(x,y);}
+    protected String movingDirection = "null";
+    public Monster(int x,int y){super(x,y);}
+    public abstract Position target(Position position);
 
-    private String movingDirection = "null";
     public void draw(TextGraphics graphics){
         char [][]prov = new char[][]{
                 { ' ', '0',' ', '0',' '},
                 {' ', ' ', '.', ' ', ' '},
                 {' ', '|', '|', '|', ' '},
         };
-        char [][]prov2 = new char[][]{
-                { ' ', ' ', ' ', ' ',' '},
-                {' ', ' ', ' ', ' ', ' '},
-                {' ', '#', ' ', '#', ' '},
-        };
-        graphics.setForegroundColor(TextColor.Factory.fromString("#000000"));
-        graphics.setBackgroundColor(TextColor.Factory.fromString("#E2000E"));
         drawTheStyle(prov,graphics);
     }
-    private Position target(Position position){
-        //if (mode == "Scatter")return new Position(81,1);
-        return position;
-    }
-    private double distance(Position p, Position p1){
+    protected double distance(Position p, Position p1){
         double difX = p1.getX() - p.getX();
         double difY = p1.getY() - p.getY();
         return Math.sqrt(difX * difX + difY * difY);
     }
-    public void move(Position position,char[][]map){
-        Position p = target(position);
+    public void move(Position p,char[][]map){
         int x = this.position.getX();
         int y = this.position.getY();
         double topo = 10000;

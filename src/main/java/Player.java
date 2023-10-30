@@ -6,75 +6,64 @@ import java.io.IOException;
 public class Player extends Element{
     public String facingDirection;
     public boolean mouthOpen = true;
-    public Player(int x, int y){super(x,y);facingDirection = "up";}
+    private String playerColor = "#B5D221";
+    char[][] pacManUp;
+    char[][] pacManDown;
+    char[][] pacManLeft;
+    char[][] pacManRight;
+    char[][] pacManClosed;
+    public Player(int x, int y){
+        super(x,y);
+        facingDirection = "right";
+        pacManUp = new char[][]{
+                { ' ', ' ', '#', '#',' '},
+                {' ', ' ', ' ', ' ', ' '},
+                {' ', ' ', ' ', ' ', ' '},
+        };
+        pacManDown = new char[][]{
+                { ' ', ' ', ' ', ' ',' '},
+                {' ', ' ', ' ', ' ', ' '},
+                {' ', '#', '#', ' ', ' '},
+        };
+        pacManLeft = new char[][]{
+                { ' ', ' ', ' ', ' ',' '},
+                {'#', '#', ' ', ' ', ' '},
+                {' ', ' ', ' ', ' ', ' '},
+        };
+        pacManRight = new char[][]{
+                { ' ', ' ', ' ', ' ',' '},
+                {' ', ' ', ' ', '#', '#'},
+                {' ', ' ', ' ', ' ', ' '},
+        };
+        pacManClosed = new char[][]{
+                { ' ', ' ', ' ', ' ',' '},
+                {' ', ' ', ' ', ' ', ' '},
+                {' ', ' ', ' ', ' ', ' '},
+        };
 
-    public void draw(TextGraphics graphics) throws IOException {
-        graphics.setForegroundColor(TextColor.Factory.fromString("#633CA5"));
-        graphics.setBackgroundColor(TextColor.Factory.fromString("#B5D221"));
-        graphics.enableModifiers(SGR.BOLD);
-        char[][] pacManImage;
-        char[][] pacManImageC;
+    }
+    public void draw(TextGraphics graphics){
+        graphics.setBackgroundColor(TextColor.Factory.fromString(playerColor));
         switch (facingDirection){
             case "right":
-                pacManImage = new char[][]{
-                        { ' ', ' ', ' ', ' ',' '},
-                        {' ', ' ', ' ', '#', '#'},
-                        {' ', ' ', ' ', ' ', ' '},
-                };
-                pacManImageC = new char[][]{
-                        { ' ', ' ', ' ', ' ',' '},
-                        {' ', ' ', ' ', ' ', ' '},
-                        {' ', ' ', ' ', ' ', ' '},
-                };
-                if (mouthOpen)drawTheStyle(pacManImage,graphics);
-                else drawTheStyle(pacManImageC,graphics);
+                if (mouthOpen)drawTheStyle(pacManRight,graphics);
+                else drawTheStyle(pacManClosed,graphics);
                 break;
             case "left":
-                pacManImage = new char[][]{
-                        { ' ', ' ', ' ', ' ',' '},
-                        {'#', '#', ' ', ' ', ' '},
-                        {' ', ' ', ' ', ' ', ' '},
-                };
-                pacManImageC = new char[][]{
-                        { ' ', ' ', ' ', ' ',' '},
-                        {' ', ' ', ' ', ' ', ' '},
-                        {' ', ' ', ' ', ' ', ' '},
-                };
-                if (mouthOpen)drawTheStyle(pacManImage,graphics);
-                else drawTheStyle(pacManImageC,graphics);
+                if (mouthOpen)drawTheStyle(pacManLeft,graphics);
+                else drawTheStyle(pacManClosed,graphics);
                 break;
             case "down":
-                pacManImage = new char[][]{
-                        { ' ', ' ', ' ', ' ',' '},
-                        {' ', ' ', ' ', ' ', ' '},
-                        {' ', '#', '#', ' ', ' '},
-                };
-                pacManImageC = new char[][]{
-                        { ' ', ' ', ' ', ' ',' '},
-                        {' ', ' ', ' ', ' ', ' '},
-                        {' ', ' ', ' ', ' ', ' '},
-                };
-                if (mouthOpen)drawTheStyle(pacManImage,graphics);
-                else drawTheStyle(pacManImageC,graphics);
+                if (mouthOpen)drawTheStyle(pacManDown,graphics);
+                else drawTheStyle(pacManClosed,graphics);
                 break;
             case "up":
-                pacManImage = new char[][]{
-                        { ' ', ' ', '#', '#',' '},
-                        {' ', ' ', ' ', ' ', ' '},
-                        {' ', ' ', ' ', ' ', ' '},
-                };
-                pacManImageC = new char[][]{
-                        { ' ', ' ', ' ', ' ',' '},
-                        {' ', ' ', ' ', ' ', ' '},
-                        {' ', ' ', ' ', ' ', ' '},
-                };
-                if (mouthOpen)drawTheStyle(pacManImage,graphics);
-                else drawTheStyle(pacManImageC,graphics);
+                if (mouthOpen)drawTheStyle(pacManUp,graphics);
+                else drawTheStyle(pacManClosed,graphics);
                 break;
         }
 
     }
-
     public void move(String direction){
         facingDirection = direction;
         switch (direction){

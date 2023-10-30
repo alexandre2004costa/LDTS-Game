@@ -13,12 +13,12 @@ import java.util.List;
 public class Game {
     public Screen screen;
     public Terminal terminal;
-    private Mapa mapa = new Mapa(91,57);
-
+    private Mapa mapa;
     private static final int FPS = 60;
     private static final long FRAME_DURATION = 1000 / FPS;
-    public Game() throws IOException {
-        TerminalSize terminalSize = new TerminalSize(91, 57);
+    public Game(int w,int h) throws IOException {
+        mapa = new Mapa(w,h);
+        TerminalSize terminalSize = new TerminalSize(w, h);
         DefaultTerminalFactory terminalFactory = new DefaultTerminalFactory().setInitialTerminalSize(terminalSize);
         terminal = terminalFactory.createTerminal();
         screen = new TerminalScreen(terminal);

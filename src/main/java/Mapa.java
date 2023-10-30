@@ -18,30 +18,38 @@ public class Mapa {
     private int width;
     private int height;
     private Player player = new Player(35,31);
-    private Enemies enemie = new Enemies(10,25);
-    private String backgroundColor = "#000000";
-    private int mouthFrequency = 8;
-    private int enemiesMoveFrequency = 8;
-    char[][] map;
+    private final String backgroundColor = "#000000";
+    private final String wallsColor = "#385A81";
+    private final String coinsColor = "#959043";
+    private final int mouthFrequency = 8;
+    private int tempM = 0;
+    private final int enemiesMoveFrequency = 8;
+    private int tempMF = 0;
+    private List<Monster> monsters;
+    private char[][] map;
 
     public Mapa(int w , int h) throws IOException {
         width = w;
         height = h;
         map = loadMapFromFile("map.txt");
+        monsters.add(new RedMonster(45,25));
+        monsters.add(new BlueMonster(45,25));
+        monsters.add(new OrangeMonster(45,25));
+        monsters.add(new PinkMonster(45,25));
     }
     public void draw(TextGraphics graphics) throws IOException {
         graphics.setBackgroundColor(TextColor.Factory.fromString(backgroundColor));
         graphics.setForegroundColor(TextColor.Factory.fromString("#2A0069"));
-        for (int row = 0; row < 57; row++) {
-            for (int col = 0; col < 91; col++) {
+        for (int row = 0; row < height; row++) {
+            for (int col = 0; col < width; col++) {
                 graphics.setBackgroundColor(TextColor.Factory.fromString(backgroundColor));
                 if (map[row][col] == '.') {
                     graphics.fillRectangle(new TerminalPosition(col, row), new TerminalSize(1, 1), ' ');
                 } else if (map[row][col] == 'P') {
-                    graphics.setBackgroundColor(TextColor.Factory.fromString("#385A81"));
+                    graphics.setBackgroundColor(TextColor.Factory.fromString(wallsColor));
                     graphics.fillRectangle(new TerminalPosition(col, row), new TerminalSize(1, 1), ' ');
                 } else if (map[row][col] == '0') {
-                    graphics.setBackgroundColor(TextColor.Factory.fromString("#959043"));
+                    graphics.setBackgroundColor(TextColor.Factory.fromString(coinsColor));
                     graphics.fillRectangle(new TerminalPosition(col, row), new TerminalSize(1, 1), ' ');
                 } else {
                     graphics.setBackgroundColor(TextColor.Factory.fromString("#CC0066"));
@@ -50,22 +58,21 @@ public class Mapa {
                 }}
         graphics.fillRectangle(new TerminalPosition(81, 1), new TerminalSize(1, 1), ' ');
         player.draw(graphics);
-        enemie.draw(graphics);
-        if(mouthFrequency == 0){
+        for (Monster k : monsters)k.draw(graphics);
+        if(mouthFrequency == tempM){
             player.mouthOpen = !player.mouthOpen;
-            mouthFrequency = 8;
+            tempM = 0;
         }
-        mouthFrequency--;
-        if(enemiesMoveFrequency == 0){
-            enemie.move(player.position,map);
-            enemiesMoveFrequency = 8;
+        if(enemiesMoveFrequency == tempMF){
+            for (Monster k : monsters)k.move(k.target(player.position),map);
+            tempMF = 0;
         }
-        enemiesMoveFrequency--;
+        tempM++;
+        tempMF++;
     }
 
     public void readInput(KeyStroke keyStroke) {
         KeyType keyType = keyStroke.getKeyType();
-
         if (keyType == KeyType.ArrowRight){
             if(canMove("right"))player.move("right");
         } else if (keyType == KeyType.ArrowLeft) {
@@ -90,11 +97,11 @@ public class Mapa {
         }
         return true;
     }
-    public static char[][] loadMapFromFile(String filename) throws IOException {
+    public char[][] loadMapFromFile(String filename) throws IOException {
             BufferedReader reader = new BufferedReader(new FileReader(filename));
             String line;
-            int numRows = 57;
-            int numCols = 91;
+            int numRows = height;
+            int numCols = width;
             char[][] map = new char[numRows][numCols];
             int row = 0;
             boolean readingFile = true;
