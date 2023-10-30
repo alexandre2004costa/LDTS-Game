@@ -9,11 +9,11 @@ public class RedMonster extends Monster{
     public void draw(TextGraphics graphics) {
         graphics.setForegroundColor(TextColor.Factory.fromString("#000000"));
         graphics.setBackgroundColor(TextColor.Factory.fromString("#E2000E"));
-        graphics.fillRectangle(new TerminalPosition(81,1),new TerminalSize(1,1),' ');
+        graphics.fillRectangle(new TerminalPosition(82,0),new TerminalSize(1,1),' ');
         super.draw(graphics);
     }
     public Position target(Position position){
-        if (mode.equals("Scatter"))return new Position(81,1);
+        if (mode.equals("Scatter"))return new Position(82,0);
         return position;
     }
 }

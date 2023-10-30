@@ -23,9 +23,9 @@ public class Mapa {
     private final String coinsColor = "#959043";
     private final int mouthFrequency = 8;
     private int tempM = 0;
-    private final int enemiesMoveFrequency = 8;
+    private final int enemiesMoveFrequency = 4;
     private int tempMF = 0;
-    private List<Monster> monsters;
+    private List<Monster> monsters = new ArrayList<>();
     private char[][] map;
 
     public Mapa(int w , int h) throws IOException {
