@@ -23,19 +23,18 @@ public class Mapa {
     private final String coinsColor = "#959043";
     private final int mouthFrequency = 8;
     private int tempM = 0;
-    private final int enemiesMoveFrequency = 4;
+    private final int enemiesMoveFrequency = 7;
     private int tempMF = 0;
-    private List<Monster> monsters = new ArrayList<>();
     private char[][] map;
+    private RedMonster red = new RedMonster(45,25);
+    private BlueMonster blue = new BlueMonster(45,25);
+    private PinkMonster pink = new PinkMonster(45,25);
+    private OrangeMonster orange = new OrangeMonster(45,25);
 
     public Mapa(int w , int h) throws IOException {
         width = w;
         height = h;
         map = loadMapFromFile("map.txt");
-        monsters.add(new RedMonster(45,25));
-        monsters.add(new BlueMonster(45,25));
-        monsters.add(new OrangeMonster(45,25));
-        monsters.add(new PinkMonster(45,25));
     }
     public void draw(TextGraphics graphics) throws IOException {
         graphics.setBackgroundColor(TextColor.Factory.fromString(backgroundColor));
@@ -56,15 +55,20 @@ public class Mapa {
                     graphics.fillRectangle(new TerminalPosition(col, row), new TerminalSize(1, 1), ' ');
                 }
                 }}
-        graphics.fillRectangle(new TerminalPosition(81, 1), new TerminalSize(1, 1), ' ');
         player.draw(graphics);
-        for (Monster k : monsters)k.draw(graphics);
+        red.draw(graphics);
+        blue.draw(graphics);
+        orange.draw(graphics);
+        pink.draw(graphics);
         if(mouthFrequency == tempM){
             player.mouthOpen = !player.mouthOpen;
             tempM = 0;
         }
         if(enemiesMoveFrequency == tempMF){
-            for (Monster k : monsters)k.move(k.target(player.position),map);
+            red.move(red.target(player.position),map,graphics,"#E2000E");
+            orange.move(orange.target(player.position),map,graphics,"#E28914");
+            pink.move(pink.target(player.position,player.facingDirection),map,graphics,"#F349B5");
+            blue.move(blue.target(player.position,player.facingDirection,red.position),map,graphics,"#12E4E4");
             tempMF = 0;
         }
         tempM++;
@@ -80,7 +84,14 @@ public class Mapa {
         } else if (keyType == KeyType.ArrowUp) {
             if(canMove("up"))player.move("up");
         } else if (keyType == KeyType.ArrowDown) {
-            if(canMove("down"))player.move("down");}
+            if(canMove("down"))player.move("down");
+        } else if (keyType == keyType.Tab) {
+            blue.mode = "fright";
+            pink.mode = "fright";
+            orange.mode = "fright";
+            red.mode = "fright";
+        }
+
     }
     private boolean canMove(String direction){
         int x = player.getX();
